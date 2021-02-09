@@ -15,7 +15,8 @@ jobs:
           # Default
           - { parts: 'builds,unittests,examples,tests,mongo', extra_dflags: '' }
           # Custom part for coverage
-          - { dc: dmd-2.094.2, parts: 'unittests,tests', extra_dflags: "-cov -version=VibedSetCoverageMerge" }
+          - { os: ubuntu-latest, dc: dmd-2.094.2, parts: 'unittests,tests', extra_dflags: "-cov -version=VibedSetCoverageMerge" }
+          - { os: ubuntu-latest, dc: ldc-latest, parts: 'unittests,examples,tests,vibe-http', extra_dflags: '' }
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60

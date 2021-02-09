@@ -6,6 +6,10 @@ DUB_ARGS="--build-mode=${DUB_BUILD_MODE:-separate} ${DUB_ARGS:-}"
 # default to run all parts
 : ${PARTS:=lint,builds,unittests,examples,tests,meson}
 
+if [[ $PARTS =~ (^|,)vibe-http(,|$) ]]; then
+    DUB_ARGS="${DUB_ARGS} --override-config vibe-d:http/experimental"
+fi
+
 if [[ $PARTS =~ (^|,)lint(,|$) ]]; then
     ./scripts/test_version.sh
     # Check for trailing whitespace"
