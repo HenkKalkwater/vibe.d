@@ -39,6 +39,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Prepare compiler
       uses: dlang-community/setup-dlang@v1
@@ -50,6 +52,7 @@ jobs:
         VIBED_DRIVER: vibe-core
         PARTS: builds,unittests,examples,tests,mongo
       run: |
+        git fetch --tags
         ./travis-ci.sh
 
     - name: '[DMD] Upload coverage to Codecov'

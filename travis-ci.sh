@@ -2,6 +2,9 @@
 
 set -e -x -o pipefail
 
+dub --version
+$DC --version
+
 DUB_ARGS="--build-mode=${DUB_BUILD_MODE:-separate} ${DUB_ARGS:-}"
 # default to run all parts
 : ${PARTS:=lint,builds,unittests,examples,tests,meson}
@@ -18,12 +21,12 @@ fi
 
 if [[ $PARTS =~ (^|,)builds(,|$) ]]; then
     # test for successful release build
-    dub build --combined -b release --compiler=$DC
+    dub build --combined -b release --compiler=$DC $DUB_ARGS
     dub clean --all-packages
 
     # test for successful 32-bit build
     if [ "$DC" == "dmd" ]; then
-        dub build --combined --arch=x86
+        dub build --combined --arch=x86 $DUB_ARGS
         dub clean --all-packages
     fi
 fi
