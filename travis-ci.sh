@@ -13,6 +13,10 @@ if [[ $PARTS =~ (^|,)vibe-http(,|$) ]]; then
     DUB_ARGS="${DUB_ARGS} --override-config vibe-d:http/experimental"
 fi
 
+if [[ $PARTS =~ (^|,)coverage(,|$) ]]; then
+    DFLAGS="-g -debug -cov -version=VibedSetCoverageMerge"
+fi
+
 if [[ $PARTS =~ (^|,)lint(,|$) ]]; then
     ./scripts/test_version.sh
     # Check for trailing whitespace"
