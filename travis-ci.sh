@@ -14,7 +14,6 @@ DUB_ARGS_HTTP_S=$DUB_ARGS
 
 if [[ $PARTS =~ (^|,)vibe-http(,|$) ]]; then
     DUB_ARGS_HTTP="${DUB_ARGS} --override-config vibe-d:http/experimental"
-    DUB_ARGS_HTTP_S="${DUB_ARGS} --config experimental"
 fi
 
 # TODO: support coverage builds!
@@ -46,7 +45,11 @@ if [[ $PARTS =~ (^|,)unittests(,|$) ]]; then
     dub test :redis --compiler=$DC $DUB_ARGS_HTTP
     dub test :web --compiler=$DC $DUB_ARGS_HTTP
     dub test :utils --compiler=$DC $DUB_ARGS
-    dub test :http --compiler=$DC $DUB_ARGS_HTTP_S
+    if [[ $PARTS =~ (^|,)vibe-http(,|$) ]]; then
+        # vibe-http is tested on its own, skip it here
+    else
+        dub test :http --compiler=$DC $DUB_ARGS
+    fi
     dub test :mail --compiler=$DC $DUB_ARGS
     dub test :stream --compiler=$DC $DUB_ARGS
     dub test :crypto --compiler=$DC $DUB_ARGS
