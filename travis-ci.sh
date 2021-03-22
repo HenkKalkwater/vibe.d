@@ -10,9 +10,11 @@ DUB_ARGS="--build-mode=${DUB_BUILD_MODE:-separate} ${DUB_ARGS:-}"
 : ${PARTS:=lint,builds,unittests,examples,tests,meson}
 
 DUB_ARGS_HTTP=$DUB_ARGS
+DUB_ARGS_HTTP_S=$DUB_ARGS
 
 if [[ $PARTS =~ (^|,)vibe-http(,|$) ]]; then
     DUB_ARGS_HTTP="${DUB_ARGS} --override-config vibe-d:http/experimental"
+    DUB_ARGS_HTTP_S="${DUB_ARGS} --config experimental"
 fi
 
 # TODO: support coverage builds!
@@ -44,7 +46,7 @@ if [[ $PARTS =~ (^|,)unittests(,|$) ]]; then
     dub test :redis --compiler=$DC $DUB_ARGS_HTTP
     dub test :web --compiler=$DC $DUB_ARGS_HTTP
     dub test :utils --compiler=$DC $DUB_ARGS
-    dub test :http --compiler=$DC $DUB_ARGS_HTTP
+    dub test :http --compiler=$DC $DUB_ARGS_HTTP_S
     dub test :mail --compiler=$DC $DUB_ARGS
     dub test :stream --compiler=$DC $DUB_ARGS
     dub test :crypto --compiler=$DC $DUB_ARGS
@@ -58,7 +60,7 @@ if [[ $PARTS =~ (^|,)examples(,|$) ]]; then
     for ex in $(\ls -1 examples/); do
         echo "[INFO] Building example $ex"
 
-        #determine whether vibe-d:http is involved
+        # determine whether vibe-d:http is involved
         if [[ "`dub describe --root=examples/$ex --data=versions`" == *Have_vibe_d_http* ]]
         then
             ARGS=$DUB_ARGS_HTTP
@@ -81,7 +83,7 @@ if [[ $PARTS =~ (^|,)tests(,|$) ]]; then
             else
                 echo "[INFO] Running test $ex"
 
-                #determine whether vibe-d:http is involved
+                # determine whether vibe-d:http is involved
                 if [[ "`dub describe --root=tests/$ex --data=versions`" == *Have_vibe_d_http* ]]
                 then
                     ARGS=$DUB_ARGS_HTTP
